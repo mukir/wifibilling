@@ -1,0 +1,6 @@
+{
+    "auth.failed": "Username atau kata sandi salah.",
+    "success.created":"Data berhasil ditambahkan",
+    "success.deleted": "Data berhasil dihapus",
+    "success.updated": "Data berhasil diperbarui"
+}

@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.dataTable th {
+    white-space: nowrap;
+    /*  ini agar table header tidak berwarna saat diinject class dari column datatable*/
+    color: initial !important;
+}
+/* ini agar class tailwind tidak overide class rotate dari tema*/
+.app-sidebar-toggle > .rotate-180 {
+    --tw-rotate: unset;
+}
+
+/*Select2 ReadOnly Start*/
+    select[readonly].select2-hidden-accessible + .select2-container {
+        pointer-events: none;
+        touch-action: none;
+    }
+
+    select[readonly].select2-hidden-accessible + .select2-container .select2-selection {
+        background: #eee;
+        box-shadow: none;
+    }
+
+    select[readonly].select2-hidden-accessible + .select2-container .select2-selection__arrow, select[readonly].select2-hidden-accessible + .select2-container .select2-selection__clear {
+        display: none;
+    }
+
+    input:disabled{
+        background-color: #eee !important;
+    }
+
+/*Select2 ReadOnly End*/
+
+.card-widget:hover .widget-icon{
+    font-size: 7rem !important;
+    opacity: .3;
+}
