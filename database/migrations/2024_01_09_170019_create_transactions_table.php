@@ -4,6 +4,7 @@ use App\Enum\PlanType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Tenant;
 
 return new class extends Migration
 {
@@ -14,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Tenant::class)->constrained()->cascadeOnDelete();
             $table->string('invoice', 25);
             $table->string('username', 32);
             $table->string('plan_name', 40);

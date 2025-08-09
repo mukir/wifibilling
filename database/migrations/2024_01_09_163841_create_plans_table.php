@@ -9,6 +9,7 @@ use App\Enum\ValidityUnit;
 use App\Models\Bandwidth;
 use App\Models\Pool;
 use App\Models\Router;
+use App\Models\Tenant;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,6 +23,7 @@ return new class extends Migration
     {
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Tenant::class)->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->foreignIdFor(Bandwidth::class)->constrained();
             $table->foreignIdFor(Router::class)->nullable()->constrained();

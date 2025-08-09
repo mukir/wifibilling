@@ -6,6 +6,8 @@ use App\Enum\PaymentGatewayStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Scopes\TenantScope;
+use App\Models\Tenant;
 
 class PaymentGateway extends Model
 {
@@ -28,6 +30,7 @@ class PaymentGateway extends Model
         'expired_date',
         'paid_date',
         'status',
+        'tenant_id',
     ];
 
     protected $casts = [
@@ -44,5 +47,21 @@ class PaymentGateway extends Model
     public function plan(): BelongsTo
     {
         return $this->belongsTo(Plan::class);
+    }
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new TenantScope);
+
+        static::creating(function ($model) {
+            if (Tenant::currentId() && !$model->tenant_id) {
+                $model->tenant_id = Tenant::currentId();
+            }
+        });
+    }
+
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
     }
 }

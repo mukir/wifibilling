@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Scopes\TenantScope;
+use App\Models\Tenant;
 
 class Plan extends Model
 {
@@ -36,6 +38,7 @@ class Plan extends Model
         'pool_id',
         'pool_expired_id',
         'enabled',
+        'tenant_id',
     ];
 
     protected $casts = [
@@ -95,5 +98,21 @@ class Plan extends Model
     public function vouchers(): HasMany
     {
         return $this->hasMany(Voucher::class);
+    }
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new TenantScope);
+
+        static::creating(function ($model) {
+            if (Tenant::currentId() && !$model->tenant_id) {
+                $model->tenant_id = Tenant::currentId();
+            }
+        });
+    }
+
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
     }
 }

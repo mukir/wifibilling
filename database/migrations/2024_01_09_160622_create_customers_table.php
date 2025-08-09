@@ -4,6 +4,7 @@ use App\Enum\ServiceType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Tenant;
 
 return new class extends Migration
 {
@@ -14,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Tenant::class)->constrained()->cascadeOnDelete();
             $table->string('username', 45)->unique();
             $table->string('password');
             $table->string('pppoe_password')->comment('For PPPOE Login');

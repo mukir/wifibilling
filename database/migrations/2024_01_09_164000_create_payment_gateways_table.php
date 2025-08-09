@@ -3,6 +3,7 @@
 use App\Enum\PaymentGatewayStatus;
 use App\Models\Plan;
 use App\Models\Router;
+use App\Models\Tenant;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,6 +17,7 @@ return new class extends Migration
     {
         Schema::create('payment_gateways', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Tenant::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Router::class)->constrained();
             $table->foreignIdFor(Plan::class)->constrained();
             $table->string('username', 32);
