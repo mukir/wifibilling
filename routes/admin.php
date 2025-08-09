@@ -15,7 +15,7 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::name('admin:')->group(function () {
+Route::middleware('tenant')->name('admin:')->group(function () {
     Route::middleware('guest:admin')
         ->group(function () {
             Route::get('login', [AdminAuthController::class, 'create'])->name('auth.login');
