@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Support\Tenant as TenantContext;
 
 class Tenant extends Model
 {
@@ -26,6 +27,6 @@ class Tenant extends Model
 
     public static function currentId(): ?int
     {
-        return auth()->user()->tenant_id ?? null;
+        return TenantContext::currentId();
     }
 }
