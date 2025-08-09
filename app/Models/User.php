@@ -5,6 +5,9 @@ namespace App\Models;
 use App\Enum\UserType;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Scopes\TenantScope;
+use App\Models\Tenant;
 
 class User extends Authenticatable
 {
@@ -21,6 +24,7 @@ class User extends Authenticatable
         'password',
         'user_type',
         'last_login',
+        'tenant_id',
     ];
 
     /**
@@ -43,6 +47,22 @@ class User extends Authenticatable
         'user_type' => UserType::class,
         'last_login' => 'datetime',
     ];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new TenantScope);
+
+        static::creating(function ($model) {
+            if (Tenant::currentId() && !$model->tenant_id) {
+                $model->tenant_id = Tenant::currentId();
+            }
+        });
+    }
+
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
+    }
 
     public function getIsAdminAttribute(): bool
     {
